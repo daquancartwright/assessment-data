@@ -245,13 +245,13 @@ module.exports = {
     },
 
     createCity: (req, res) => {
-        const { cityName, rating, countryId } = req.body
+        const { name, rating, countryId } = req.body
         sequelize.query(`
         insert into cities (name, rating, countryId)
-        values ('${cityName}', ${rating}, ${countryId}) 
+        values ('${name}', ${rating}, ${countryId}) 
         `)
-            .then((dbRes) => {res.status(200).send(dbRes[0])})
-            .catch(err => console.log(err))   
+        .then((dbRes) => {res.status(200).send(dbRes[0])})
+        .catch(err => console.log(err))   
     },
 
     getCities: (req, res) => {
@@ -272,6 +272,7 @@ module.exports = {
 
     deleteCity: (req, res) => {
         const { id } = req.params
+
         sequelize.query(`
         delete from cities 
         where city_id = ${id}
@@ -280,4 +281,4 @@ module.exports = {
             .catch(err => console.log(err))
     }
 
-}
+};
