@@ -237,17 +237,18 @@ module.exports = {
     },
 
     getCountries: (req, res) => {
+
         sequelize.query(`select * from countries;
         `)
-            .then((dbRes) => {res.status(200).send(dbRes[0])})
-            .catch(err => console.log(err))
+        .then((dbRes) => {res.status(200).send(dbRes[0])})
+        .catch(err => console.log(err))
     },
 
     createCity: (req, res) => {
-        let { cityName } = req.body
+        const { cityName, rating, countryId } = req.body
         sequelize.query(`
         insert into cities (name, rating, countryId)
-        values (${cityName}, ${rating}, ${countryId}) 
+        values ('${cityName}', ${rating}, ${countryId}) 
         `)
             .then((dbRes) => {res.status(200).send(dbRes[0])})
             .catch(err => console.log(err))   
@@ -255,17 +256,25 @@ module.exports = {
 
     getCities: (req, res) => {
         sequelize.query(`
-        select cities.city_id cities.name as city cities.rating countries.country_id countries.name as country
-        from cities join countries on cities.country_id = countries.country_id;
+        select 
+        cities.city_id 
+        cities.name as city 
+        cities.rating 
+        countries.country_id 
+        countries.name as country
+        from cities 
+        join countries 
+        on cities.country_id = countries.country_id;
         `)
-            .then((dbRes) => {res.status(200).send(dbRes[0])})
-            .catch(err => console.log(err))
+        .then((dbRes) => {res.status(200).send(dbRes[0])})
+        .catch(err => console.log(err))
     },
 
     deleteCity: (req, res) => {
         const { id } = req.params
         sequelize.query(`
-        delete from cities where city_id = ${id}
+        delete from cities 
+        where city_id = ${id}
         `)
             .then((dbRes) => {res.status(200).send(dbRes[0])})
             .catch(err => console.log(err))
